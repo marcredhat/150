@@ -47,3 +47,7 @@ openssl x509 -req -extfile cml.ext -days 365 -in ${host}.csr -CA /var/lib/cloude
 openssl x509 -in ${host}.crt -text -noout
 
 
+export host=ml-efd2c24e-d13.apps.apps.airgap-l1-4-10.kcloud.cloudera.com
+kubectl delete secret/cml-tls-secret -n devcml
+kubectl create secret tls cml-tls-secret --cert=${host}.crt --key=${host}.key -o yaml --dry-run | kubectl -n devcml create -f -
+
