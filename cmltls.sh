@@ -29,4 +29,21 @@ stdout, stderr = p.communicate(enc)
 print (stdout)
 EOF
  
- export host=ml-5fc768ab-a4a.apps.apps.airgap-l1-4-10.kcloud.cloudera.com
+export host=ml-efd2c24e-d13.apps.apps.airgap-l1-4-10.kcloud.cloudera.com
+
+openssl req -new -newkey rsa:3072 -nodes -keyout ${host}.key -subj "/CN=${host}/OU=PS/O=Cloudera, Inc./ST=CA/C=US" -out ${host}.csr
+openssl req -in ${host}.csr -text -verify
+
+
+
+echo "[default]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = *.${host}
+DNS.2 = ${host}" > cml.ext
+
+openssl x509 -req -extfile cml.ext -days 365 -in ${host}.csr -CA /var/lib/cloudera-scm-agent/agent-cert/cm-auto-in_cluster_ca_cert.pem -CAkey /var/lib/cloudera-scm-server/certmanager/CMCA/private/ca_key.pem -CAcreateserial -out ${host}.crt -passin pass:$(python tmp.py)
+openssl x509 -in ${host}.crt -text -noout
+
+
