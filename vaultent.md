@@ -97,3 +97,6 @@ token_policies       ["default" "vaultpolicy"]
 identity_policies    []
 policies             ["default" "vaultpolicy"]
 ```
+
+
+https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2
