@@ -56,3 +56,27 @@ vault operator unseal
 ```
 vault login
 ```
+
+```
+root@ip-10-10-16-196:/home/ubuntu# vault login
+Token (will be hidden):
+Success! You are now authenticated. The token information displayed below
+is already stored in the token helper. You do NOT need to run "vault login"
+again. Future Vault requests will automatically use this token.
+
+Key                  Value
+---                  -----
+token                hvs.zUuX014x3YAQX1AlXySwtqGo
+token_accessor       YVXyRsavFhZefuFXYf54sRKe
+token_duration       ∞
+token_renewable      false
+token_policies       ["root"]
+identity_policies    []
+policies             ["root"]
+root@ip-10-10-16-196:/home/ubuntu# vault namespace create education
+Key                Value
+---                -----
+custom_metadata    map[]
+id                 Otzxt
+path               education/
+```
