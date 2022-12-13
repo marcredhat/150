@@ -80,3 +80,20 @@ custom_metadata    map[]
 id                 Otzxt
 path               education/
 ```
+
+```
+vault policy write --namespace education  vaultpolicy ./vaultpolicy
+```
+
+```
+root@ip-10-10-16-196:/home/ubuntu# vault token create -policy=vaultpolicy
+Key                  Value
+---                  -----
+token                hvs.CAESIKPpl_wjXM8FFCU79q8bplyyd1_W0D3xSa5-I-dUVva7Gh4KHGh2cy5VUXIzVllWMTBTVUlXOTFKQzd5UWRxaUc
+token_accessor       DfTJQ0CsnBJCkDEIgGXL47W3
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "vaultpolicy"]
+identity_policies    []
+policies             ["default" "vaultpolicy"]
+```
