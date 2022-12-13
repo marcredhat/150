@@ -49,3 +49,10 @@ It is possible to generate new unseal keys, provided you have a quorum of
 existing unseal keys shares. See "vault operator rekey" for more information.
 ```
 
+```
+vault operator unseal
+```
+
+```
+vault login
+```
