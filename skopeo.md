@@ -1,3 +1,6 @@
+
+https://epma.medium.com/install-sonatype-nexus-3-on-ubuntu-20-04-lts-562f8ba20b98
+
 ```
 curl -s https://admin:admin@mchisinevski-3.mchisinevski.root.hwx.site:9999/v2/_catalog
 ```
