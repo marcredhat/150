@@ -1,4 +1,5 @@
 https://kifarunix.com/install-nexus-repository-manager-on-ubuntu/
+https://github.com/sonatype-nexus-community/nexus-repository-installer
 
 ```
 curl -s https://admin:admin@mchisinevski-3.mchisinevski.root.hwx.site:9999/v2/_catalog
