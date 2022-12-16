@@ -131,6 +131,23 @@ path "sys/mounts"
 vault policy write --namespace education  vaultpolicy ./vaultpolicy
 ```
 
+
+```
+root@ip-10-10-16-196:/home/ubuntu# export VAULT_ADDR=https://ip-10-10-16-196:8200
+root@ip-10-10-16-196:/home/ubuntu#  export VAULT_CACERT=/etc/pki/tls/
+root@ip-10-10-16-196:/home/ubuntu# export VAULT_CACERT=/etc/pki/tls/ca.pem
+root@ip-10-10-16-196:/home/ubuntu# vault token create -policy=vaultpolicy -namespace=education
+Key                  Value
+---                  -----
+token                hvs.CAESIBS3YAi-Zho5Yb5t5Gamq2sQscxiVo7UWX8fzso9hAZlGiQKImh2cy5ucmV2c1RqbEtDN1FzVU43aWpRUXVzQ1guT3R6eHQ
+token_accessor       N5So9Pq330bh1VvbhNZDbWRp.Otzxt
+token_duration       768h
+token_renewable      true
+token_policies       ["default" "vaultpolicy"]
+identity_policies    []
+policies             ["default" "vaultpolicy"]
+```
+
 ```
 root@ip-10-10-16-196:/home/ubuntu# vault token create -policy=vaultpolicy
 Key                  Value
