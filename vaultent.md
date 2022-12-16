@@ -81,6 +81,52 @@ id                 Otzxt
 path               education/
 ```
 
+
+```
+cat vaultpolicy
+# Manage auth methods broadly across Vault
+path "auth/*"
+{
+  capabilities = ["create", "read", "update", "list"]
+}
+# Create, update auth methods
+path "sys/auth/*"
+{
+  capabilities = ["create", "update", "sudo"]
+}
+
+# List auth methods
+path "sys/auth"
+{
+  capabilities = ["read"]
+}
+
+# List existing policies
+path "sys/policies/acl"
+{
+  capabilities = ["list"]
+}
+
+# Create and manage ACL policies via API & UI
+path "sys/policies/acl/*"
+{
+  capabilities = ["create", "read", "update", "list"]
+}
+
+
+# Manage secrets engines
+path "sys/mounts/*"
+{
+  capabilities = ["create", "read", "update", "list"]
+}
+
+# List existing secrets engines.
+path "sys/mounts"
+{
+  capabilities = ["read"]
+}
+```
+
 ```
 vault policy write --namespace education  vaultpolicy ./vaultpolicy
 ```
