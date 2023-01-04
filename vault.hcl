@@ -1,3 +1,9 @@
+#Create SAN cerets for vault.ip-10-10-16-196 using 
+#https://github.com/marcredhat/150/blob/main/createcert.sh
+
+#Copy the SAN certs to /etc/pki/tls (location specified in /etc/vault.d/vault.hcl below)
+#cp create-registry-certs/* /etc/pki/tls
+
 #root@ip-10-10-16-196:/home/ubuntu# cat /etc/vault.d/vault.hcl
 # Full configuration options can be found at https://www.vaultproject.io/docs/configuration
 
