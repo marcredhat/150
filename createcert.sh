@@ -1,12 +1,16 @@
 #!/bin/bash
 set -euxo pipefail
 
-HOSTNAME=ip-10-10-16-196
+# Set up local registry with long-lived certs with SAN
+# if in gcp instance
+#HOSTNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/hostname" -H "Metadata-Flavor: Google")
+HOSTNAME=vault.ip-10-10-16-196
 GOPATH="/root/go/"
 
 #date --set="10 MAR 2021 18:00:00"
 
-sudo apt -y install podman apache2  make golang-go golang-cfssl
+sudo apt -y install podman apache2  make
+sudo apt  -y install golang-go golang-cfssl
 #rpm -qi go-toolset
 #set +e
 
@@ -126,15 +130,11 @@ compatibility:
 EOF
 
 sudo mkdir -p /opt/registry/{auth,certs,data}
-#sudo firewall-cmd --add-port=5000/tcp --zone=internal --permanent
-#sudo firewall-cmd --add-port=5000/tcp --zone=public   --permanent
-#sudo firewall-cmd --add-service=http  --permanent
-#sudo firewall-cmd --reload
+sudo firewall-cmd --add-port=5000/tcp --zone=internal --permanent
+sudo firewall-cmd --add-port=5000/tcp --zone=public   --permanent
+sudo firewall-cmd --add-service=http  --permanent
+sudo firewall-cmd --reload
 
-
-cp /etc/pki/tls/*.pem /usr/local/share/ca-certificates
-update-ca-certificates
-  
 CA=$(sudo tail -n +2 ca.pem | head -n-1 | tr -d '\r\n')
 sudo htpasswd -bBc /opt/registry/auth/htpasswd test test
 sudo cp registry-config.yml /opt/registry/.
