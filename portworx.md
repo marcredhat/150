@@ -1,6 +1,8 @@
 
 ceph-rook and portworx on the same OpenShift 4.10 cluster
 
+## Ceph
+
 ```
 oc rsh rook-ceph-tools-6765648554-8cpgx ceph status
   cluster:
@@ -47,7 +49,7 @@ Let's tag the Ceph nodes so that they are not used by Portworx
 oc label nodes  ip-10-0-144-251.us-west-2.compute.internal ip-10-0-167-1.us-west-2.compute.internal ip-10-0-217-214.us-west-2.compute.internal.    px/enabled=false --overwrite
 
 
-** Portworx
+## Portworx
 StorageCluster: https://github.com/marcredhat/150/blob/main/portworxstoragecluster.yaml
 
 
