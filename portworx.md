@@ -3,11 +3,14 @@
 
 # replacing NFS with Portworx px-sharedv4-sc
 
+# creating pods using px-sharedv4-sc
+
+
 
 ## Ceph
 
-```
 oc rsh rook-ceph-tools-6765648554-8cpgx ceph status
+```
   cluster:
     id:     08cf1953-7cb3-4444-a676-c22e74409be0
     health: HEALTH_OK
@@ -46,7 +49,7 @@ ID   CLASS  WEIGHT   TYPE NAME                                                  
 ```
 
 
-Let's tag the Ceph nodes so that they are not used by Portworx
+*Let's tag the Ceph nodes so that they are not used by Portworx.*
 
 
 oc label nodes  ip-10-0-144-251.us-west-2.compute.internal ip-10-0-167-1.us-west-2.compute.internal ip-10-0-217-214.us-west-2.compute.internal.    px/enabled=false --overwrite
@@ -55,8 +58,8 @@ oc label nodes  ip-10-0-144-251.us-west-2.compute.internal ip-10-0-167-1.us-west
 ## Portworx
 StorageCluster: https://github.com/marcredhat/150/blob/main/portworxstoragecluster.yaml
 
-```
 oc rsh px-cluster-be2635e9-0ad1-460c-99fb-8054f24c24ef-6k97d /opt/pwx/bin/pxctl status
+```
 Defaulting container name to portworx.
 Use 'oc describe pod/px-cluster-be2635e9-0ad1-460c-99fb-8054f24c24ef-6k97d -n portworx' to see all of the containers in this pod.
 Status: PX is operational
@@ -94,7 +97,7 @@ Global Storage Pool
 	Total Capacity	:  2.9 TiB
 ```
 
-## Replace NFS with 
+## Replace NFS with Portworx px-sharedv4-sc
 
 ```
 podman pull gcr.io/google_containers/test-webserver
@@ -123,7 +126,6 @@ parameters:
 ```
 
 ### Create Portwork sharedv4 PVC
-
 
 cat sharedv4pvc
 ```
