@@ -91,4 +91,136 @@ Global Storage Pool
 	Total Capacity	:  2.9 TiB
 ```
 
+## Replace NFS with 
 
+```
+podman pull gcr.io/google_containers/test-webserver
+podman login ip-10-0-1-85.us-west-2.compute.internal:9999
+podman images
+podman push 25906c5a72ed ip-10-0-1-85.us-west-2.compute.internal:9999/tests
+```
+
+kubectl create secret docker-registry regcred --docker-server=ip-10-0-1-85.us-west-2.compute.internal:9999 --docker-username=admin.  --docker-password=<password> --docker-email=m@m.m
+	
+	
+oc get pvc
+```
+NAME              STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS     AGE
+px-check-pvc      Bound    pvc-fdad9f1d-d44a-4394-a9d7-38bfee78cc9a   2Gi        RWO            px-csi-db        3h31m
+px-sharedv4-pvc   Bound    pvc-3183c9b9-a622-4bb1-8ad4-580ce55c3bf8   10Gi       RWX            px-sharedv4-sc   46m
+```
+
+### Create pod using px-sharedv4-pvc
+
+cat podsharedv4
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-sharedv4
+spec:
+  containers:
+  - name: test-container
+    image: ip-10-0-1-85.us-west-2.compute.internal:9999/tests
+  imagePullSecrets:
+  - name: regcred
+    volumeMounts:
+    - name: test-volume
+      mountPath: /test-portworx-volume
+  volumes:
+  - name: test-volume
+    persistentVolumeClaim:
+      claimName: px-sharedv4-pvc
+```
+
+oc get pods | grep sharedv4
+```
+pod-sharedv4                                            1/1     Running   0               28m
+```
+	
+oc get pod pod-sharedv4 -o yaml | kubectl neat
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    k8s.v1.cni.cncf.io/network-status: |-
+      [{
+          "name": "openshift-sdn",
+          "interface": "eth0",
+          "ips": [
+              "10.130.5.44"
+          ],
+          "default": true,
+          "dns": {}
+      }]
+    k8s.v1.cni.cncf.io/networks-status: |-
+      [{
+          "name": "openshift-sdn",
+          "interface": "eth0",
+          "ips": [
+              "10.130.5.44"
+          ],
+          "default": true,
+          "dns": {}
+      }]
+    openshift.io/scc: anyuid
+  name: pod-sharedv4
+  namespace: portworx
+spec:
+  containers:
+  - image: ip-10-0-1-85.us-west-2.compute.internal:9999/tests
+    name: test-container
+    securityContext:
+      capabilities:
+        drop:
+        - MKNOD
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-59rqh
+      readOnly: true
+  imagePullSecrets:
+  - name: regcred
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  schedulerName: stork
+  securityContext:
+    seLinuxOptions:
+      level: s0:c33,c7
+  serviceAccountName: default
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: test-volume
+    persistentVolumeClaim:
+      claimName: px-sharedv4-pvc
+  - name: kube-api-access-59rqh
+    projected:
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              fieldPath: metadata.namespace
+            path: namespace
+      - configMap:
+          items:
+          - key: service-ca.crt
+            path: service-ca.crt
+          name: openshift-service-ca.crt
+```
+	
