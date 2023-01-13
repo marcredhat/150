@@ -1,0 +1,77 @@
+#oc get StorageCluster -o yaml -n portworx | kubectl neat > portworxstoragecluster.yaml
+#cat portworxstoragecluster.yaml
+apiVersion: v1
+items:
+- apiVersion: core.libopenstorage.org/v1
+  kind: StorageCluster
+  metadata:
+    annotations:
+      portworx.io/install-source: https://install.portworx.com/?operator=true&mc=false&kbver=1.23.5%2B012e945&ns=portworx&oem=esse&user=70db16af-dd97-4c12-b9c5-469c7e65917e&b=true&kd=type%3Dgp2%2Csize%3D150&s=%22type%3Dgp2%2Csize%3D600%22&c=px-cluster-be2635e9-0ad1-460c-99fb-8054f24c24ef&osft=true&eks=true&stork=true&csi=true&mon=true&tel=false&st=k8s&promop=true
+      portworx.io/is-eks: "true"
+      portworx.io/is-openshift: "true"
+      portworx.io/misc-args: --oem esse
+    name: px-cluster-be2635e9-0ad1-460c-99fb-8054f24c24ef
+    namespace: portworx
+  spec:
+    autopilot:
+      enabled: true
+      providers:
+      - name: default
+        params:
+          url: http://px-prometheus:9090
+        type: prometheus
+    cloudStorage:
+      deviceSpecs:
+      - type=gp2,size=600
+      kvdbDeviceSpec: type=gp2,size=150
+      maxStorageNodesPerZone: 11
+    csi:
+      enabled: true
+      installSnapshotController: true
+    image: portworx/oci-monitor:2.12.1
+    imagePullPolicy: Always
+    kvdb:
+      internal: true
+    monitoring:
+      prometheus:
+        enabled: true
+        exportMetrics: true
+    placement:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: px/enabled
+              operator: NotIn
+              values:
+              - "false"
+            - key: node-role.kubernetes.io/infra
+              operator: DoesNotExist
+            - key: node-role.kubernetes.io/master
+              operator: DoesNotExist
+          - matchExpressions:
+            - key: px/enabled
+              operator: NotIn
+              values:
+              - "false"
+            - key: node-role.kubernetes.io/infra
+              operator: DoesNotExist
+            - key: node-role.kubernetes.io/master
+              operator: Exists
+            - key: node-role.kubernetes.io/worker
+              operator: Exists
+    revisionHistoryLimit: 10
+    secretsProvider: k8s
+    startPort: 17001
+    stork:
+      args:
+        webhook-controller: "true"
+      enabled: true
+    updateStrategy:
+      rollingUpdate:
+        maxUnavailable: 1
+      type: RollingUpdate
+    version: 2.12.1
+kind: List
+metadata:
+  resourceVersion: ""
