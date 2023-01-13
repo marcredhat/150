@@ -339,3 +339,7 @@ mchaws2                logs                                                   Bo
 mchaws2                storage-volume-cdp-release-prometheus-alertmanager-0   Bound    pvc-40db92b7-bbac-42c1-ab3c-a99a4428c3b4   2Gi        RWO            rook-ceph-block   6d22h
 mchaws2                storage-volume-cdp-release-prometheus-alertmanager-1   Bound    pvc-b93b5e2e-733c-4eaf-94fd-e42c747d17da   2Gi        RWO            rook-ceph-block   6d22h
 ```
+
+## Uninstall Portworx using the Operator
+
+https://2.12.docs.portworx.com/operations/operate-kubernetes/uninstall/uninstall-operator/
