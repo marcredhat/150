@@ -101,7 +101,64 @@ podman push 25906c5a72ed ip-10-0-1-85.us-west-2.compute.internal:9999/tests
 ```
 
 kubectl create secret docker-registry regcred --docker-server=ip-10-0-1-85.us-west-2.compute.internal:9999 --docker-username=admin.  --docker-password=<password> --docker-email=m@m.m
+
+
+### Create Portworx px-sharedv4-sc StorageClass
 	
+cat sharedsc
+```
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+    name: px-sharedv4-sc
+provisioner: kubernetes.io/portworx-volume
+parameters:
+   repl: "2"
+   sharedv4: "true"
+   sharedv4_svc_type: "ClusterIP"
+   stork.libopenstorage.org/preferRemoteNodeOnly: "true"
+```
+
+### Create Portwork sharedv4 PVC
+
+
+cat sharedv4pvc
+```
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: px-sharedv4-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: px-sharedv4-sc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+```
+
+oc get pvc px-sharedv4-pvc -o yaml | kubectl neat
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    pv.kubernetes.io/bind-completed: "yes"
+    pv.kubernetes.io/bound-by-controller: "yes"
+    volume.beta.kubernetes.io/storage-class: px-sharedv4-sc
+    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/portworx-volume
+    volume.kubernetes.io/storage-provisioner: kubernetes.io/portworx-volume
+  name: px-sharedv4-pvc
+  namespace: portworx
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  volumeName: pvc-3183c9b9-a622-4bb1-8ad4-580ce55c3bf8
+```
 	
 oc get pvc
 ```
@@ -224,3 +281,26 @@ spec:
           name: openshift-service-ca.crt
 ```
 	
+## Check Portworx PVCs are bound
+
+oc get pvc -A | grep px
+```
+portworx               px-check-pvc                                           Bound    pvc-fdad9f1d-d44a-4394-a9d7-38bfee78cc9a   2Gi        RWO            px-csi-db         3h39m
+portworx               px-sharedv4-pvc                                        Bound    pvc-3183c9b9-a622-4bb1-8ad4-580ce55c3bf8   10Gi       RWX            px-sharedv4-sc    54m
+```
+	
+## Check rook-ceph PVCs are bound
+
+oc get pvc -A | grep rook-ceph
+```
+mch10                  cdp-embedded-db-backend                                Bound    pvc-386d9633-5777-4bcb-b1fa-f889c0820391   200Gi      RWO            rook-ceph-block   8d
+mch10                  cdp-release-prometheus-server                          Bound    pvc-a01096bd-06d9-4d5b-8c9c-1542642cf029   10Gi       RWO            rook-ceph-block   8d
+mch10                  logs                                                   Bound    pvc-ba759a24-606e-4815-8cae-f4444a46bb91   20Gi       RWO            rook-ceph-block   8d
+mch10                  storage-volume-cdp-release-prometheus-alertmanager-0   Bound    pvc-e7a30f8d-bc35-4771-bc27-00ef724616b7   2Gi        RWO            rook-ceph-block   8d
+mch10                  storage-volume-cdp-release-prometheus-alertmanager-1   Bound    pvc-2d6916fb-cb44-4587-9147-7eaa7ecf6928   2Gi        RWO            rook-ceph-block   8d
+mchaws2                cdp-embedded-db-backend                                Bound    pvc-658becc1-3db6-4144-9475-d1719fe6e468   200Gi      RWO            rook-ceph-block   6d22h
+mchaws2                cdp-release-prometheus-server                          Bound    pvc-ca2f512e-dc90-4c9c-a86f-b17f5cc67f6a   10Gi       RWO            rook-ceph-block   6d22h
+mchaws2                logs                                                   Bound    pvc-02d25aba-4e53-4a73-8a12-3d2cdac80cb1   20Gi       RWO            rook-ceph-block   6d22h
+mchaws2                storage-volume-cdp-release-prometheus-alertmanager-0   Bound    pvc-40db92b7-bbac-42c1-ab3c-a99a4428c3b4   2Gi        RWO            rook-ceph-block   6d22h
+mchaws2                storage-volume-cdp-release-prometheus-alertmanager-1   Bound    pvc-b93b5e2e-733c-4eaf-94fd-e42c747d17da   2Gi        RWO            rook-ceph-block   6d22h
+```
