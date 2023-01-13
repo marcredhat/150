@@ -99,15 +99,6 @@ Global Storage Pool
 
 ## Replace NFS with Portworx px-sharedv4-sc
 
-```
-podman pull gcr.io/google_containers/test-webserver
-podman login ip-10-0-1-85.us-west-2.compute.internal:9999
-podman images
-podman push 25906c5a72ed ip-10-0-1-85.us-west-2.compute.internal:9999/tests
-```
-
-kubectl create secret docker-registry regcred --docker-server=ip-10-0-1-85.us-west-2.compute.internal:9999 --docker-username=admin.  --docker-password=<password> --docker-email=m@m.m
-
 
 ### Create Portworx px-sharedv4-sc StorageClass
 	
@@ -172,7 +163,18 @@ px-check-pvc      Bound    pvc-fdad9f1d-d44a-4394-a9d7-38bfee78cc9a   2Gi       
 px-sharedv4-pvc   Bound    pvc-3183c9b9-a622-4bb1-8ad4-580ce55c3bf8   10Gi       RWX            px-sharedv4-sc   46m
 ```
 
+
 ### Create pod using px-sharedv4-pvc
+
+```
+podman pull gcr.io/google_containers/test-webserver
+podman login ip-10-0-1-85.us-west-2.compute.internal:9999
+podman images
+podman push 25906c5a72ed ip-10-0-1-85.us-west-2.compute.internal:9999/tests
+```
+
+kubectl create secret docker-registry regcred --docker-server=ip-10-0-1-85.us-west-2.compute.internal:9999 --docker-username=admin.  --docker-password=<password> --docker-email=m@m.m
+
 
 cat podsharedv4
 ```
