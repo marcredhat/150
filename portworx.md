@@ -1,5 +1,8 @@
 
-ceph-rook and portworx on the same OpenShift 4.10 cluster
+# ceph-rook and portworx on the same OpenShift 4.10 cluster
+
+# replacing NFS with Portworx px-sharedv4-sc
+
 
 ## Ceph
 
