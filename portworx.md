@@ -6,6 +6,34 @@
 # creating pods using px-sharedv4-sc
 
 
+## Check whether you need to increase ncrease the maximum number of pods per node on the worker nodes (default is 250)
+```
+for i in `oc get nodes | egrep -v "NAME" | awk '{ print $1 }'`;
+  do
+    echo $i `oc get pods -A --field-selector=spec.host=$i  -o wide | egrep -v "NAME" | wc -l` ;
+  done
+ip-10-0-131-222.us-west-2.compute.internal 51
+ip-10-0-132-120.us-west-2.compute.internal 260
+ip-10-0-143-1.us-west-2.compute.internal 21
+ip-10-0-144-251.us-west-2.compute.internal 422
+ip-10-0-151-136.us-west-2.compute.internal 58
+ip-10-0-151-47.us-west-2.compute.internal 247
+ip-10-0-167-1.us-west-2.compute.internal 226
+ip-10-0-175-9.us-west-2.compute.internal 29
+ip-10-0-183-38.us-west-2.compute.internal 217
+ip-10-0-194-208.us-west-2.compute.internal 247
+ip-10-0-203-246.us-west-2.compute.internal 88
+ip-10-0-217-214.us-west-2.compute.internal 251
+ip-10-0-227-45.us-west-2.compute.internal 35
+ip-10-0-228-24.us-west-2.compute.internal 252
+ip-10-0-242-26.us-west-2.compute.internal 62
+ip-10-0-248-135.us-west-2.compute.internal 224
+```
+
+Follow the procedure to increase the maximum number of pods per node on the worker nodes:
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.10/html/post-installation_configuration/post-install-machine-configuration-tasks
+
+
 
 ## Ceph
 
