@@ -10,7 +10,7 @@
 #                   To locate orphaned snapshots.
 #                   Set to your old backup schedule names
 # - delete_age_days: Delete snapshots that are above the specified age in days
-#                    To locate stale snapshots. 
+#                    To locate stale snapshots.
 #                    Set to your oldest possible snapshot (i.e. I have a weekly backup, with Retain = 4, so the oldest snapshot should be 28 days)
 #
 # Usage:
@@ -33,12 +33,12 @@ current_date = datetime.datetime.now()
 longhorn_url = 'http://10.43.8.40:9500/v1'
 
 # Variables; change according to your needs
-delete_strings = ['c-6fffho', 'c-b8sdpg']
-delete_age_days = 30
+delete_strings = ['a', '-']
+delete_age_days = 0
 
 def delete_snapshot(volume, snapshot, reason):
     print('Deleting {reason} snapshot {name} created on {created} with size {size:.1f} MiB'.format(
-                name=snapshot.name, 
+                name=snapshot.name,
                 reason=reason,
                 created=datetime.datetime.strptime(snapshot.created, date_format).strftime('%Y-%m-%d'),
                 size=int(snapshot.size) * mib_conversion_factor
@@ -47,7 +47,7 @@ def delete_snapshot(volume, snapshot, reason):
         volume.snapshotDelete(name=snapshot.name)
     except longhorn.ApiError as e:
         print('Failed to delete snapshot due to API error: {}'.format(e))
-        
+
 
 
 def process_snapshot(volume, snapshot):
@@ -76,8 +76,8 @@ def process_volume(volume):
         snapshot_is_deleted = process_snapshot(volume, snapshot)
         if snapshot_is_deleted:
             deleted_count += 1
-            
-    if deleted_count > 0:    
+
+    if deleted_count > 0:
         print('Purging snapshots...')
         volume.snapshotPurge()
 
@@ -99,7 +99,7 @@ def process_cluster(client):
           len(volumes),
         ))
         process_volume(volume)
-    
+
     print('Finished volume snapshot cleanup')
 
 
