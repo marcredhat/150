@@ -1,4 +1,4 @@
-#[rocky@full1 ~]$ cat readme.marc
+
 #### Marc - repo setup
 
 ```
@@ -115,8 +115,8 @@ done
 
 ```
 for NODE in `ls -1 full*.key|sed "s/.key//g"`;do
-openssl pkcs12 -export -in ${NODE}.crt -inkey ${NODE}.key -certfile ${NODE}.crt -out tmpkeystore.p12 -password pass:SomePassword123! -name ${NODE}
-keytool -importkeystore -srckeystore tmpkeystore.p12 -srcstoretype pkcs12 -destkeystore ${NODE}.jks -deststoretype JKS -alias ${NODE} -srcstorepass SomePassword123! -deststorepass SomePassword123!
+openssl pkcs12 -export -in ${NODE}.crt -inkey ${NODE}.key -certfile ${NODE}.crt -out tmpkeystore.p12 -password pass:<password> -name ${NODE}
+keytool -importkeystore -srckeystore tmpkeystore.p12 -srcstoretype pkcs12 -destkeystore ${NODE}.jks -deststoretype JKS -alias ${NODE} -srcstorepass <password> -deststorepass <password>
 rm -rf tmpkeystore.p12
 done
 ```
@@ -359,6 +359,5 @@ ansible-playbook -i ${MY_WORKSPACE}/OPEN-deploy-definitions/OPEN-stg/inventory_s
    -f 20 \
    pvc_base_setup.yml
 ```
-
 
 
