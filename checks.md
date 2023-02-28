@@ -1,3 +1,10 @@
+
+```
+(OPEN-env) [rocky@full1 cloudera-playbooks]$ grep -rni full_truststore .
+./cldr-runner/collections/ansible_collections/cloudera/cluster/roles/infrastructure/ca_common/defaults/main.yml:62:tls_uber_truststore_path: "{{ base_dir_security_pki }}/full_truststore.jks"
+```
+
+
 ```
 [rocky@full4 ~]$ keytool -list -keystore /opt/cloudera/security/pki/full_truststore.jks -v | grep -A 10 -B 10 "Example" | more
 Enter keystore password:
