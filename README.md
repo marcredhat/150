@@ -1,4 +1,12 @@
 
+
+![alt text](images/clusterlayout.png)
+
+![alt text](images/machinelayout.png)
+
+![alt text](images/machines.png)
+
+
 #### Marc - repo setup
 
 ```
