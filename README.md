@@ -4,7 +4,7 @@
 
 ![alt text](images/machinelayout.png)
 
-![alt text](images/machines.png)
+![alt text](images/machines2.png)
 
 
 #### Marc - repo setup
