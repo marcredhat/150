@@ -1,4 +1,7 @@
 
+https://full4.base.local:7183/api/v51/certs/truststorePassword
+
+
 ```
 (OPEN-env) [rocky@full1 cloudera-playbooks]$ grep -rni full_truststore .
 ./cldr-runner/collections/ansible_collections/cloudera/cluster/roles/infrastructure/ca_common/defaults/main.yml:62:tls_uber_truststore_path: "{{ base_dir_security_pki }}/full_truststore.jks"
