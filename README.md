@@ -203,9 +203,9 @@ cd ${MY_WORKSPACE}/cloudera-deploy && git checkout devel-pvc-update && git pull
 #######################################################RSYNC################################################################################
 
 ```
-rsync -av --exclude=".*" /Users/npopa/eclipse-workspace/OPEN-deploy-definitions/* rocky@54.200.238.248:cloudera-playbooks/OPEN-deploy-definitions
-rsync -av --exclude=".*" /Users/npopa/eclipse-workspace/cloudera-deploy/* rocky@54.200.238.248:cloudera-playbooks/cloudera-deploy
-rsync -av --exclude=".*" /Users/npopa/eclipse-workspace/cldr-runner/* rocky@54.200.238.248:cloudera-playbooks/cldr-runner
+rsync -av --exclude=".*" /Users/<user1>/eclipse-workspace/OPEN-deploy-definitions/* rocky@<jumphost public IP>:cloudera-playbooks/OPEN-deploy-definitions
+rsync -av --exclude=".*" /Users/<user1>/eclipse-workspace/cloudera-deploy/* rocky@<jumphost public IP>:cloudera-playbooks/cloudera-deploy
+rsync -av --exclude=".*" /Users/<user1>/eclipse-workspace/cldr-runner/* rocky@<jumphost public IP>:cloudera-playbooks/cldr-runner
 date;
 ```
 
