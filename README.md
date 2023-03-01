@@ -369,3 +369,7 @@ ansible-playbook -i ${MY_WORKSPACE}/OPEN-deploy-definitions/OPEN-stg/inventory_s
 ```
 
 
+# Checks
+
+https://github.com/marcredhat/150/blob/main/checks%20keystore%20truststore.md
+https://github.com/marcredhat/150/blob/main/check%20sssd
