@@ -1,5 +1,6 @@
 
-```[rocky@full1 crip]$ crip export pem -u https://full4.base.local:7183
+```
+[rocky@full1 crip]$ crip export pem -u https://full4.base.local:7183
 Successfully Exported certificates
 ```
 
