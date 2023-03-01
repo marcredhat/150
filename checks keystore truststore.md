@@ -1,4 +1,7 @@
 
+
+https://docs.google.com/document/d/1Ls9ZrwK_tMQ0MbRuYP2D8klAOB1mRsqi/edit
+
 https://full4.base.local:7183/api/v51/certs/truststorePassword
 
 
