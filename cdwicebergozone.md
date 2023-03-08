@@ -1,5 +1,6 @@
-#https://medium.com/engineering-cloudera/open-data-lakehouse-powered-by-apache-iceberg-on-apache-ozone-a225d5dcfe98
+https://medium.com/engineering-cloudera/open-data-lakehouse-powered-by-apache-iceberg-on-apache-ozone-a225d5dcfe98
 
+```
 #Iceberg on HDFS
 CREATE TABLE default.iceberg_weblogs_noozone (
 `time` timestamp,
@@ -95,7 +96,7 @@ drwxrwx---+  - hive   hive            0 2023-03-08 02:52 /warehouse/tablespace/e
 -rw-rw----+  3 hive   hive         6480 2023-03-08 02:52 /warehouse/tablespace/external/hive/iceberg_evolution/metadata/789801fa-f109-4939-a921-2087a6c3f56c-m0.avro
 -rw-rw----+  3 hive   hive         3814 2023-03-08 02:52 /warehouse/tablespace/external/hive/iceberg_evolution/metadata/snap-1600434829731789731-1-789801fa-f109-4939-a921-2087a6c3f56c.avro
 drwxrwx---+  - hive   hive            0 2023-03-08 02:52 /warehouse/tablespace/external/hive/iceberg_evolution/temp
-
+```
 
 
 
