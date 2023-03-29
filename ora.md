@@ -3,6 +3,28 @@ Video: https://youtu.be/qO0nES3uDd8
 https://docs.google.com/document/d/1mKVX3r7Nsf8DN6LpusgAksEYf8lEES70kHfK5k4sHko/edit#
 
 
+Create an Oracle auto-login wallet
+
+```
+orapki wallet create -wallet /opt/oracle/product/19c/dbhome_1/wallet -auto_login
+```
+
+Add a self signed certificate to this wallet
+
+```
+orapki wallet add -wallet /opt/oracle/product/19c/dbhome_1/wallet -dn "CN=server" -keysize 4096 -self_signed -validity 365
+```
+
+Export the certificate
+
+```
+orapki wallet export -wallet /opt/oracle/product/19c/dbhome_1/wallet -dn "CN=server" -cert server_ca.cert
+```
+
+
+```
+
+
 cat /opt/oracle/product/19c/dbhome_1/network/admin/listener.ora
 
 ```
@@ -89,8 +111,44 @@ ORCLPDB1_SSL =
     )
 ```
 
-jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=ctr-e172-1620330694487-1580740-01-000005.hwx.site)(PORT=2484))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORCLPDB1))) 
 
+Restart the listener
+
+```
+lsnrctl stop
+lsnrctl start
+```
+
+Copy the content of exported certificate and add it to the keystore on the base cluster instances
+
+Paste the copied content to ca-cert.pem.
+
+Fetch keystore password from /etc/hadoop/conf/ssl-client.xml
+
+```
+/usr/java/default/bin/keytool -importcert -alias oracle -file ca-cert.pem -keystore /var/lib/cloudera-scm-agent/agent-cert/cm-auto-global_truststore.jks -storetype jks -noprompt -storepass <PASSWORD>
+```
+	
+Add an override for the connection URL in CM -> HIVE-1 -> Configuration -> Hive Metastore Server Advanced Configuration Snippet (Safety Valve) for hive-site.xml
+
+Name: javax.jdo.option.ConnectionURL
+
+Value: 
+
+```
+jdbc:oracle:thin:@tcps://<BASE_CLUSTER_HOSTNAME>:2484/ORCLPDB1?javax.net.ssl.trustStore=/var/lib/cloudera-scm-agent/agent-cert/cm-auto-global_truststore.jks&javax.net.ssl.trustStorePassword=<PASSWORD>&oracle.net.ssl_server_dn_match=false
+```
+	
+Change port to 2484 in CM -> HIVE-1 -> Configuration -> Hive Metastore Database Port
+
+Restart the stale services (HIVE-1).
+
+
+```
+jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCPS)(HOST=ctr-e172-1620330694487-1580740-01-000005.hwx.site)(PORT=2484))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORCLPDB1))) 
+```
+	
+	
 ![Hive JDBC](images/orahive1.png)
 
 
