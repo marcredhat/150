@@ -89,6 +89,11 @@ ORCLPDB1_SSL =
 ```
 
 
+
+![Hive JDBC](images/orahive1.png)
+
+
+
 ```
 ss -tulpn | grep 2484
 tcp    LISTEN     0      128    [::]:2484               [::]:*                   users:(("tnslsnr",pid=15297,fd=13))
