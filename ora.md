@@ -134,6 +134,9 @@ SELECT * FROM default.iceberg_weblogs_noozone2 for system_version as of 23709281
 ```
 
 
+![Hive JDBC](images/oraiceberg1.png)
+
+
 
 https://stackoverflow.com/questions/63928724/what-do-the-various-tables-in-hive-metastore-contain
 
