@@ -1,3 +1,4 @@
+Video: https://youtu.be/qO0nES3uDd8
 
 https://docs.google.com/document/d/1mKVX3r7Nsf8DN6LpusgAksEYf8lEES70kHfK5k4sHko/edit#
 
