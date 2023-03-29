@@ -21,10 +21,6 @@ Export the certificate
 orapki wallet export -wallet /opt/oracle/product/19c/dbhome_1/wallet -dn "CN=server" -cert server_ca.cert
 ```
 
-
-```
-
-
 cat /opt/oracle/product/19c/dbhome_1/network/admin/listener.ora
 
 ```
