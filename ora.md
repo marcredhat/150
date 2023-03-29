@@ -107,6 +107,33 @@ export PATH=${PATH}:${ORACLE_HOME}/bin
 sqlplus sys/cloudera@ORCLPDB1 as sysdba
 ```
 
+https://github.com/marcredhat/150/blob/main/cdwicebergozone.md
+
+```
+CREATE TABLE default.iceberg_weblogs_noozone2 (
+`time` timestamp,
+app string,
+request string,
+response_code int)
+PARTITIONED BY SPEC(day(`time`))
+STORED BY ICEBERG
+
+INSERT INTO default.iceberg_weblogs_noozone2 VALUES('2023-01-17 18:35:49', 'metastore', 'GET /metastore/table/default/sample_07 HTTP/1.1', 200);
+INSERT INTO default.iceberg_weblogs_noozone2 VALUES('2023-01-17 18:50:12', 'search', 'GET /search/?collection=10000001 HTTP/1.1', 200);
+INSERT INTO default.iceberg_weblogs_noozone2 VALUES('2023-01-17 19:10:30', 'metastore', 'GET /metastore/table/default/sample_07 HTTP/1.1', 200);
+
+
+select * from default.iceberg_weblogs_noozone2
+
+
+SELECT * FROM default.iceberg_weblogs_noozone2.history
+
+SELECT * FROM default.iceberg_weblogs_noozone2.snapshots 
+
+SELECT * FROM default.iceberg_weblogs_noozone2 for system_version as of 2370928115991003337
+```
+
+
 
 https://stackoverflow.com/questions/63928724/what-do-the-various-tables-in-hive-metastore-contain
 
